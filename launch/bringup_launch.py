@@ -52,7 +52,6 @@ def generate_launch_description():
                 controller_params # This should now correctly resolve to the path
             ],
             output='screen',
-            # remappings=[('/robot_description', '/robot_description')] # Optional, for deprecated warning
         ),
 
         Node(
@@ -60,6 +59,13 @@ def generate_launch_description():
             executable='spawner',
             arguments=['diff_drive_controller', '--ros-args', '-r', '__node:=diff_drive_controller_spawner'],
             output='screen',
+        ),
+
+        Node(
+            package='controller_manager',
+            executable='spawner',
+            arguments=['joint_state_broadcaster'], 
+            output='screen'
         ),
 
         Node(
