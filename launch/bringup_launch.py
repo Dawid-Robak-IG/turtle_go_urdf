@@ -106,7 +106,7 @@ def generate_launch_description():
             executable='teleop_twist_keyboard',
             name='teleop_keyboard',
             prefix='xterm -e',
-            remappings=[('/cmd_vel', '/diff_drive_controller/cmd_vel')],
+            remappings=[('/cmd_vel', '/diff_drive_controller/cmd_vel_unstamped')],
             output='screen'
         )
     ])
