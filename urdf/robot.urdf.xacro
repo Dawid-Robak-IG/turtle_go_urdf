@@ -1,0 +1,90 @@
+<robot name="my_turtle" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <link name="base_link">
+    <visual>
+        <geometry>
+            <box size="0.4 0.6 0.2"/>
+        </geometry>
+        <material name="red">
+            <color rgba="1 0 0 0.7"/>
+        </material>
+    </visual>
+    <collision>
+        <geometry>
+        <box size="0.4 0.6 0.2"/>
+        </geometry>
+    </collision>
+    <inertial>
+        <mass value="10"/>
+        <inertia ixx="1e-3" ixy="0.0" ixz="0.0" iyy="1e-3" iyz="0.0" izz="1e-3"/>
+    </inertial>
+    </link>
+
+    <link name="lidar_link">
+        <visual>
+            <geometry><cylinder radius="0.08" length="0.05"/></geometry>
+            <origin xyz="0 0 0.25" rpy="0 0 0"/>
+            <material name="red">
+                <color rgba="0 1 0 1"/>
+            </material>
+        </visual>
+    </link>
+    <joint name="lidar_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="lidar_link"/>
+        <origin xyz="0 0 0.25"/>
+    </joint>
+
+    <xacro:macro name="wheel" params="name x y">
+        <link name="${name}">
+            <visual>
+                <geometry><cylinder radius="0.1" length="0.05"/></geometry>
+                <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+                <material name="black">
+                    <color rgba="0 0 0 1"/>
+                </material>
+            </visual>
+        </link>
+        <joint name="${name}_joint" type="continuous">
+            <parent link="base_link"/>
+            <child link="${name}"/>
+            <origin xyz="${x} ${y} 0.1" rpy="0 0 0"/>
+            <axis xyz="0 1 0"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:wheel name="left_wheel" x="0" y="0.3"/>
+    <xacro:wheel name="right_wheel" x="0" y="-0.3"/>
+
+    <link name="caster_link">
+        <visual>
+            <geometry><sphere radius="0.05"/></geometry>
+            <origin xyz="-0.15 0 0.05"/>
+        </visual>
+    </link>
+    <joint name="caster_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="caster_link"/>
+        <origin xyz="-0.15 0 0.05"/>
+    </joint>
+
+
+
+    <ros2_control name="MyRobotHardware" type="system">
+    <hardware>
+        <plugin>fake_components/GenericSystem</plugin>
+    </hardware>
+
+    <joint name="left_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+    </joint>
+    </ros2_control>
+</robot>
