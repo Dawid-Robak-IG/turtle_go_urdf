@@ -2,8 +2,11 @@
 
   <!-- Gazebo plugin for ros2_control -->
   <gazebo>
-    <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so"/>
+    <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+        <parameters>/home/nitron/roboty_mobilne/install/turtle_go_urdf/share/turtle_go_urdf/config/diff_drive_controller.yaml</parameters>
+    </plugin>
   </gazebo>
+
 
   <link name="base_link">
     <visual>
@@ -141,7 +144,7 @@
 
   <ros2_control name="MyRobotHardware" type="system">
     <hardware>
-      <plugin>fake_components/GenericSystem</plugin>
+      <plugin>gazebo_ros2_control/GazeboSystem</plugin>
     </hardware>
 
     <joint name="left_wheel_joint">
